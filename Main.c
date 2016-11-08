@@ -1,10 +1,10 @@
 #include "Main.h"
 
-// ³]©w·L³B²z¾¹¬ÛÃöµ²ºc¦ì¤¸
+// è¨­å®šå¾®è™•ç†å™¨ç›¸é—œçµæ§‹ä½å…ƒ
 #pragma config	OSC=HS, BOREN=OFF, BORV = 2, PWRT=OFF, WDT=OFF, LVP=OFF
 
-#define OSC_CLOCK		16//¾_Àú¾¹16MHz
-#define Slave_Address	0x02//Modbus¦ì§}
+#define OSC_CLOCK		16//éœ‡ç›ªå™¨16MHz
+#define Slave_Address	0x02//Modbusä½å€
 #define ModbusIO		PORTDbits.RD7
 #define FuncModbus		readModbus[1]
 #define Sensor			2
@@ -47,11 +47,11 @@ void isr_high(void)
 	int readStart=0,readCount=0,readCRC=0;
 	
 	readModbus[0]=RCREG;
-	if(readModbus[0]==Slave_Address)//½T»{©I¥s¹ï¶H
+	if(readModbus[0]==Slave_Address)//ç¢ºèªå‘¼å«å°è±¡
 	{
 		while(!PIR1bits.RCIF);
 		FuncModbus=RCREG;
-		if((FuncModbus==0x03)||(FuncModbus==0x04))//½T»{Function
+		if((FuncModbus==0x03)||(FuncModbus==0x04))//ç¢ºèªFunction
 		{
 			for(i=2;i<8;i++)
 			{
@@ -74,12 +74,12 @@ void isr_high(void)
 						for_count=(readStart+readCount)*Sensorlength;
 						for(i=3,data_count=0,arraylength=readStart*Sensorlength;arraylength<for_count;i++,data_count++,arraylength++)
 						{
-							writeModbus[i]=Data[arraylength];//¸ê®Æ´£¨ú¨Ã­pºâÁ`µ§¼Æ
+							writeModbus[i]=Data[arraylength];//è³‡æ–™æå–ä¸¦è¨ˆç®—ç¸½ç­†æ•¸
 						}
-						writeModbus[2]=data_count;//¶Ç¦^¸ê®Æµ§¼Æ
-						readCRC=crcGenerator(writeModbus,(data_count+3));//Âà´«CRC(°}¦C,Á`¶Ç¦^µ§¼Æ)
-						writeModbus[data_count+4]=readCRC;//°ª¦ì¤¸CRC
-						writeModbus[data_count+3]=readCRC>>8;//§C¦ì¤¸CRC
+						writeModbus[2]=data_count;//å‚³å›è³‡æ–™ç­†æ•¸
+						readCRC=crcGenerator(writeModbus,(data_count+3));//è½‰æ›CRC(é™£åˆ—,ç¸½å‚³å›ç­†æ•¸)
+						writeModbus[data_count+4]=readCRC;//é«˜ä½å…ƒCRC
+						writeModbus[data_count+3]=readCRC>>8;//ä½ä½å…ƒCRC
 						
 						ModbusIO=1;
 						for_count=data_count+5;
@@ -131,7 +131,7 @@ void main(void)
 	}	
 }
 
-//²@¬í©µ¿ğ
+//æ¯«ç§’å»¶é²
 void delay_ms(long A)
 {
 //This function is only good for OSC_CLOCK higher than 4MHz
