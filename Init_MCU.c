@@ -1,0 +1,50 @@
+#include "Main.h"
+
+void InitializePORT(void)
+{
+	PORTA=0x00;
+	PORTB=0x00;
+	PORTC=0x00;
+	PORTD=0x00;
+	TRISA=0b00000011;
+	TRISB=0x00;
+	TRISC=0x00;
+	TRISD=0x00;
+}	
+
+void InitializeAD(void)
+{
+	ADCON1 = 0b00001101; 	// Enable AN0 & AN1 with External V
+	ADCON2 = 0b10000010 ;	// Left Just. TAD = FOSC/32
+	ADCON0 = 0b00000001;	// ADCS[2:0] = 010, Tad=16MHz/32=2uS
+							// A/D ON , Select Channel = AN1
+	PIE1bits.ADIE=0;		// Disable A/D interrupt
+}	
+
+void InitializeUSART(void)
+{
+	TXSTA=0b00100110;
+	RCSTA=0b10010000;
+	SPBRG=51;
+	
+	/*OpenUSART(USART_TX_INT_OFF&USART_RX_INT_ON&USART_ASYNCH_MODE&
+				USART_EIGHT_BIT&USART_CONT_RX&USART_BRGH_HIGH,51);*/
+		
+	RCSTAbits.SPEN=1;
+	TRISCbits.TRISC6=0;
+	TRISCbits.TRISC7=1;
+}	
+
+void InitializeINT(void)
+{
+	RCONbits.IPEN=1;
+	INTCON=0b11000000;
+	INTCON2=0b00000000;
+	INTCON3=0b00000000;
+	PIR1=0b00000000;
+	PIR2=0b00000000;
+	PIE1=0b00100000;
+	PIE2=0b00000000;
+	IPR1=0b00110000;
+	IPR2=0b00000000;
+}
